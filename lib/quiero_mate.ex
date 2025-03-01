@@ -11,10 +11,10 @@ defmodule QuieroMate do
   end
 
   # Store a new item in memory with an auto-incrementing ID
-  def put(value) do
+  def put(value, id) do
     Agent.get_and_update(__MODULE__, fn %{data: data, counter: counter} ->
       new_counter = counter + 1
-      new_data = Map.put(data, new_counter, value)
+      new_data = Map.put(data, id, value)
       {new_counter, %{data: new_data, counter: new_counter}}
     end)
   end
@@ -24,15 +24,11 @@ defmodule QuieroMate do
     Agent.get(__MODULE__, &Map.get(&1.data, id))
   end
 
-  # Remove the most recent item (highest ID) and decrement the counter
-  def pop do
+  # Remove an item by ID
+  def delete_by_id(id) do
     Agent.get_and_update(__MODULE__, fn %{data: data, counter: counter} ->
-      if counter > 0 do
-        {Map.get(data, counter), %{data: Map.delete(data, counter), counter: counter - 1}}
-      else
-        # If empty, reset
-        {nil, %{data: %{}, counter: 0}}
-      end
+      new_data = Map.delete(data, id)
+      {counter, %{data: new_data, counter: counter}}
     end)
   end
 

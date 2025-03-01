@@ -61,9 +61,14 @@ channel.on('shout', function (payload) {
 
 // Send the join signal to the server on "shout" channel
 function joinRonda() {
-  channel.push('shout', {
-    name: name.value,
-  });
+  channel.push("current_id", {})  // Send a request to the server
+    .receive("ok", (resp) => {
+      channel.push('shout', {
+        name: name.value,
+        id: resp.id
+      });
+      console.log("Received current_id:", resp);
+    })
 }
 
 // Render the message with Tailwind styles
@@ -73,7 +78,10 @@ function render_message(payload) {
 
   // Message HTML with Tailwind CSS Classes for layout/style:
   li.innerHTML = `
-  <div class="px-3 py-1 border-b border-gray-900"> ${payload.name}</div>
+  <div class="px-3 py-1 border-b border-gray-900">
+    <span>${payload.name}</span>
+    <button id="remove-${payload.id}" class="text-red-500 hover:text-red-700 p-1 hero-trash-mini"></button>
+  </div>
   `
   // Append to list
   ul.appendChild(li);
@@ -91,4 +99,21 @@ join.addEventListener('click', function (_) {
   if (name.value.length > 0) {
     joinRonda()
   }
+});
+
+document.addEventListener("click", (event) => {
+  // Check if the clicked element or its parent is a remove button
+  const button = event.target.closest("button[id^='remove-']");
+  if (!button) return; // Exit if it's not a remove button
+
+  // Extract the number from the ID (e.g., "remove-3" → "3")
+  const id = button.id.replace("remove-", "");
+  console.log("Removing item with ID:", id);
+
+  channel.push('remove_id', {
+    id: id
+  });
+
+  // Remove the parent <li> or <div> if needed
+  button.closest("li")?.remove(); // Adjust this if needed
 });
