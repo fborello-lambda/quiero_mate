@@ -8,7 +8,7 @@ defmodule QuieroMateWeb.UserSocket do
 
   ## Channels
 
-  channel "ronda:*", QuieroMateWeb.RondaChannel
+  channel("ronda:*", QuieroMateWeb.RondaChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

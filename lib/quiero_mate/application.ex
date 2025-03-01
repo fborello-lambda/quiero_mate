@@ -14,7 +14,10 @@ defmodule QuieroMate.Application do
       # Start a worker by calling: QuieroMate.Worker.start_link(arg)
       # {QuieroMate.Worker, arg},
       # Start to serve requests, typically the last entry
-      QuieroMateWeb.Endpoint
+      QuieroMateWeb.Endpoint,
+      # Start the Agent that helps to store
+      # the people connected in memory.
+      QuieroMate
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
