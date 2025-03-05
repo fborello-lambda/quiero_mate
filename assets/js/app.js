@@ -80,7 +80,8 @@ function render_message(payload) {
   li.innerHTML = `
   <div class="px-3 py-1 border-b border-gray-900">
     <span>${payload.name}</span>
-    <button id="remove-${payload.id}" class="text-red-500 hover:text-red-700 p-1 hero-trash-mini"></button>
+    <button id="remove-${payload.id}" class="text-red-500 hover:text-red-700 hero-trash-mini"></button>
+    <button id="request-${payload.id}" class="text-green-500 hover:text-green-700 hero-arrow-path-mini"></button>
   </div>
   `
   // Append to list
@@ -102,18 +103,29 @@ join.addEventListener('click', function (_) {
 });
 
 document.addEventListener("click", (event) => {
-  // Check if the clicked element or its parent is a remove button
-  const button = event.target.closest("button[id^='remove-']");
-  if (!button) return; // Exit if it's not a remove button
+  const button_remove = event.target.closest("button[id^='remove-']");
+  const button_request_mate = event.target.closest("button[id^='request-']");
+  if (button_remove) {
+    // Extract the number from the ID (e.g., "remove-3" → "3")
+    const id = button_remove.id.replace("remove-", "");
+    console.log("Removing item with ID:", id);
 
-  // Extract the number from the ID (e.g., "remove-3" → "3")
-  const id = button.id.replace("remove-", "");
-  console.log("Removing item with ID:", id);
+    channel.push('remove_id', {
+      id: id
+    });
 
-  channel.push('remove_id', {
-    id: id
-  });
+    // Remove the parent <li>
+    button_remove.closest("li")?.remove();
+  } else if (button_request_mate) {
+    // Extract the number from the ID (e.g., "request-3" → "3")
+    const id = button_request_mate.id.replace("request-", "");
 
-  // Remove the parent <li> or <div> if needed
-  button.closest("li")?.remove(); // Adjust this if needed
+    console.log("Requesting mate with ID:", id);
+
+    channel.push('request_id', {
+      id: id
+    });
+  } else {
+    return;
+  }
 });
