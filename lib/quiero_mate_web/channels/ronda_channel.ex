@@ -43,6 +43,8 @@ defmodule QuieroMateWeb.RondaChannel do
     # Insert new person in Agent
     QuieroMate.put(name, id)
 
+    QuieroMate.list() |> IO.inspect()
+
     socket
     |> broadcast("shout", payload)
 
