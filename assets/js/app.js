@@ -58,6 +58,24 @@ channel.on('shout', function (payload) {
   render_message(payload)
 });
 
+channel.on('turn', function (payload) {
+  // Find the element by id
+  const selected_element = document.getElementById(`current-${payload.id}`);
+
+  // Turn off all the other arrows
+  const allElements = document.querySelectorAll('.hero-arrow-right-circle-mini');
+  allElements.forEach(function (element) {
+    if (element !== selected_element) {
+      element.classList.remove('text-blue-500')
+      element.classList.add('text-white')
+    }
+  });
+
+  if (selected_element) {
+    selected_element.classList.remove('text-white');
+    selected_element.classList.add('text-blue-500');
+  }
+});
 
 // Send the join signal to the server on "shout" channel
 function joinRonda() {
@@ -79,6 +97,7 @@ function render_message(payload) {
   // Message HTML with Tailwind CSS Classes for layout/style:
   li.innerHTML = `
   <div class="px-3 py-1 border-b border-gray-900">
+    <p id="current-${payload.id}" class="text-white hero-arrow-right-circle-mini"></p>
     <span>${payload.name}</span>
     <button id="remove-${payload.id}" class="text-red-500 hover:text-red-700 hero-trash-mini"></button>
     <button id="request-${payload.id}" class="text-green-500 hover:text-green-700 hero-arrow-path-mini"></button>

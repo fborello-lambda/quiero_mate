@@ -36,14 +36,18 @@ defmodule QuieroMateWeb.RondaChannel do
     {:noreply, socket}
   end
 
+  # TODO check how to connect the channel
+  def handle_in("turn", _payload, socket) do
+    IO.puts("Received turn update")
+    {:noreply, socket}
+  end
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (ronda:lobby).
   @impl true
   def handle_in("shout", %{"name" => name, "id" => id} = payload, socket) do
     # Insert new person in Agent
     QuieroMate.put(name, id)
-
-    QuieroMate.list() |> IO.inspect()
 
     socket
     |> broadcast("shout", payload)
