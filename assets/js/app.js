@@ -46,7 +46,11 @@ window.liveSocket = liveSocket
 
 const ul = document.getElementById('ronda');    // list of people.
 const name = document.getElementById('name');   // name of the person.
-const join = document.getElementById('join');   // join button
+const join = document.getElementById('join');   // join button.
+const set_interval = document.getElementById('set_interval'); // set_interval button.
+const interval = document.getElementById('interval');   // new interval.
+const prev_turn_button = document.getElementById('prev_turn');
+const next_turn_button = document.getElementById('next_turn');
 
 const channel = socket.channel('ronda:lobby', {});  // connect to socket
 channel.join()
@@ -97,12 +101,19 @@ function render_message(payload) {
   // Message HTML with Tailwind CSS Classes for layout/style:
   li.innerHTML = `
   <div class="px-3 py-1 border-b border-gray-900">
-    <p id="current-${payload.id}" class="text-white hero-arrow-right-circle-mini"></p>
+    <p id="current-${payload.id}" class="hero-arrow-right-circle-mini"></p>
     <span>${payload.name}</span>
     <button id="remove-${payload.id}" class="text-red-500 hover:text-red-700 hero-trash-mini"></button>
     <button id="request-${payload.id}" class="text-green-500 hover:text-green-700 hero-arrow-path-mini"></button>
   </div>
   `
+
+  if (payload.turn === payload.id) {
+    li.querySelector(`#current-${payload.id}`).classList.add("text-blue-500");
+  } else {
+    li.querySelector(`#current-${payload.id}`).classList.add("text-white");
+  }
+
   // Append to list
   ul.appendChild(li);
 }
@@ -119,6 +130,32 @@ join.addEventListener('click', function (_) {
   if (name.value.length > 0) {
     joinRonda()
   }
+});
+
+// On "Set Interval" button press
+set_interval.addEventListener('click', function (_) {
+  const newInterval = parseInt(interval.value, 10);
+
+  if (!isNaN(newInterval) && newInterval > 0) {
+    // Ideally we should wait for a response before changing the page
+    channel.push("set_interval", { interval: newInterval });
+    const intervalDisplay = document.getElementById("interval_display");
+    if (intervalDisplay) {
+      intervalDisplay.textContent = `Intervalo: ${newInterval} [secs]`;
+    }
+  } else {
+    console.error("Invalid interval. Please enter a valid number.");
+  }
+})
+
+// On "<< Anterior" button press
+prev_turn_button.addEventListener('click', function (_) {
+  channel.push("turn_manual", { dir: 'prev' })  // Send a request to the server
+});
+
+// On "Siguiente >>" button press
+next_turn_button.addEventListener('click', function (_) {
+  channel.push("turn_manual", { dir: 'next' })  // Send a request to the server
 });
 
 document.addEventListener("click", (event) => {

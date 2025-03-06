@@ -2,6 +2,30 @@
 <div class="h-screen flex flex-col justify-center items-center">
   <!-- Title  -->
   <h1 class="text-3xl">Armate uno Hernán!!!</h1>
+  <div class="w-full flex flex-row items-center text-gray-800 focus:outline-none font-normal justify-center">
+    <input type="text" id="interval" placeholder="Intervalo" required
+        class="w-fit md:w-1/3 px-1.5 py-1.5 rounded-md  bg-slate-200" />
+
+    <button id="set_interval" class="text-white bold rounded-md w-fit px-3 py-1.5 ml-2
+        transition-colors duration-150 bg-[#4ca64f] hover:bg-[#2e6f31]">
+      Set Timer! [s]
+    </button>
+  </div>
+  <div class="w-full flex flex-row items-center text-gray-800 focus:outline-none font-normal justify-center">
+    <p id="interval_display">Intervalo: {TurnManager.get_interval()/1000} [secs]</p>
+  </div>
+  <!-- Control Buttons -->
+  <div class="mt-8 flex items-center justify-center space-x-6">
+    <button id="prev_turn" class="flex items-center space-x-2 text-green-600 hover:text-green-900 transition">
+      <span class="hero-chevron-double-left"></span>
+      <span class="font-semibold">Anterior</span>
+    </button>
+    <button id="next_turn" class="flex items-center space-x-2 text-green-600 hover:text-green-900 transition">
+      <span class="font-semibold">Siguiente</span>
+      <span class="hero-chevron-double-right"></span>
+    </button>
+  </div>
+  <!-- List's Header -->
   <h1 class="text-xl">Integrantes de la Ronda:</h1>
   <!-- People Listed  -->
   <div class="mt-[4rem] w-full max-w-md justify-center">

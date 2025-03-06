@@ -36,18 +36,29 @@ defmodule QuieroMateWeb.RondaChannel do
     {:noreply, socket}
   end
 
-  # TODO check how to connect the channel
-  def handle_in("turn", _payload, socket) do
-    IO.puts("Received turn update")
+  def handle_in("turn_manual", %{"dir" => dir}, socket) do
+    case dir do
+      "next" -> TurnManager.manual_turn(:next)
+      "prev" -> TurnManager.manual_turn(:prev)
+      _ -> :ok
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("set_interval", %{"interval" => interval}, socket) do
+    TurnManager.set_interval(interval * 1000)
     {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (ronda:lobby).
   @impl true
-  def handle_in("shout", %{"name" => name, "id" => id} = payload, socket) do
+  def handle_in("shout", %{"name" => name, "id" => id}, socket) do
     # Insert new person in Agent
     QuieroMate.put(name, id)
+
+    payload = %{name: name, id: id, turn: QuieroMate.get_current_turn()}
 
     socket
     |> broadcast("shout", payload)
@@ -64,7 +75,7 @@ defmodule QuieroMateWeb.RondaChannel do
   def handle_info(:after_join, socket) do
     QuieroMate.all()
     |> Enum.each(fn {id, name} ->
-      push(socket, "shout", %{name: name, id: id})
+      push(socket, "shout", %{name: name, id: id, turn: QuieroMate.get_current_turn()})
     end)
 
     {:noreply, socket}
