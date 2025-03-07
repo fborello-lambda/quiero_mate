@@ -14,6 +14,12 @@ The goal of this project is to learn about the channels/sockets that Phoenix use
 
 The webpage is designed to organize a queue for drinking mate.
 
+<div align="center">
+
+  ![demo-gif](demo.gif)
+
+</div>
+
 # How
 
 Dependencies:
