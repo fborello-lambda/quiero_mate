@@ -12,16 +12,16 @@ defmodule QuieroMateWeb.RondaChannelTest do
 
   test "ping replies with status ok", %{socket: socket} do
     ref = push(socket, "ping", %{"hello" => "there"})
-    assert_reply ref, :ok, %{"hello" => "there"}
+    assert_reply(ref, :ok, %{"hello" => "there"})
   end
 
   test "shout broadcasts to ronda:lobby", %{socket: socket} do
-    push(socket, "shout", %{"hello" => "all"})
-    assert_broadcast "shout", %{"hello" => "all"}
+    push(socket, "shout", %{name: "name", id: "1"})
+    assert_broadcast("shout", %{name: "name", id: "1"})
   end
 
   test "broadcasts are pushed to the client", %{socket: socket} do
     broadcast_from!(socket, "broadcast", %{"some" => "data"})
-    assert_push "broadcast", %{"some" => "data"}
+    assert_push("broadcast", %{"some" => "data"})
   end
 end
