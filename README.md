@@ -16,6 +16,12 @@ The webpage is designed to organize a queue for drinking mate.
 
 # How
 
+Dependencies:
+- Erlang
+- Elixir and Phoenix
+- Linux: `notify-send`
+  - Ubuntu: `sudo apt install libnotify-bin`
+
 To start the app:
   - PROD: `MIX_ENV=prod make run`
   - DEV: `make run` 

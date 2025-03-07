@@ -56,7 +56,6 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          # Ensures repository name is lowercase (tr '[:upper:]' '[:lower:]').
-          tags: ghcr.io/${{ github.repository_owner }}/$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]'):latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
