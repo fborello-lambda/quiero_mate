@@ -69,6 +69,8 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
     apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+    # Used for the notifications
+    libnotify-bin dbus \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -78,16 +80,17 @@ ENV LANG="en_US.UTF-8"
 ENV LANGUAGE="en_US:en"
 ENV LC_ALL="en_US.UTF-8"
 
+RUN adduser -u 1000 --disabled-password --gecos "" myuser
+USER 1000:1000
+
 WORKDIR "/app"
-RUN chown nobody /app
+RUN chown myuser /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/quiero_mate ./
-
-USER nobody
+COPY --from=builder --chown=myuser:root /app/_build/${MIX_ENV}/rel/quiero_mate ./
 
 # If using an environment that doesn't automatically reap zombie processes, it is
 # advised to add an init process such as tini via `apt-get install`

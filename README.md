@@ -1,18 +1,34 @@
-# QuieroMate
+<h1 align="center">Quiero Mate 🧉</h1>
 
-To start your Phoenix server:
+<div align="center">
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+[Why?](#why) - [What?](#what) - [How?](#how)
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+</div>
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# Why
 
-## Learn more
+The goal of this project is to learn about the channels/sockets that Phoenix uses to interact with JavaScript.
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+# What
+
+The webpage is designed to organize a queue for drinking mate.
+
+# How
+
+To start the app:
+  - PROD: `MIX_ENV=prod make run`
+  - DEV: `make run` 
+
+To start the app for debugging:
+  - Run `mix setup` to install and setup dependencies
+  - Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+
+### Notes
+
+- The `Dockerfile` was created with `mix phx.gen.release --docker`
+- To use the notifications with docker (Tested on Ubuntu) `sudo` has to be used.
+
+### Resources
+
+- [dbus - libnotify with Docker](https://unix.stackexchange.com/questions/546726/setup-docker-container-to-communicate-with-host-over-d-bus)

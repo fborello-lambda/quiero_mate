@@ -24,13 +24,11 @@ defmodule QuieroMateWeb.RondaChannel do
   end
 
   def handle_in("remove_id", %{"id" => id}, socket) do
-    id |> IO.inspect()
     QuieroMate.delete_by_id(String.to_integer(id))
     {:noreply, socket}
   end
 
   def handle_in("request_id", %{"id" => id}, socket) do
-    id |> IO.inspect()
     name = QuieroMate.get(String.to_integer(id))
     SystemNotifier.send_notification("QuieroMate", "#{name} quiere mate!")
     {:noreply, socket}
