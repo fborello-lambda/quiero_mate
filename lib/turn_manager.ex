@@ -15,12 +15,38 @@ defmodule TurnManager do
     {:ok, %{state | timer_ref: new_timer}}
   end
 
+  # -------- API --------
+
   def manual_turn(:next) do
     GenServer.cast(__MODULE__, :next_turn)
   end
 
   def manual_turn(:prev) do
     GenServer.cast(__MODULE__, :prev_turn)
+  end
+
+  def get_interval do
+    GenServer.call(__MODULE__, :get_interval)
+  end
+
+  def set_interval(new_interval) when is_integer(new_interval) and new_interval > 0 do
+    GenServer.call(__MODULE__, {:set_interval, new_interval})
+  end
+
+  # -------- Handlers --------
+
+  def handle_call(:get_interval, _from, state) do
+    {:reply, state.interval, state}
+  end
+
+  def handle_call({:set_interval, new_interval}, _from, state) do
+    # Cancel the previous timer
+    if state.timer_ref, do: Process.cancel_timer(state.timer_ref)
+
+    # Start a new timer with the new interval
+    new_timer = schedule_next_turn(new_interval)
+
+    {:reply, :ok, %{interval: new_interval, timer_ref: new_timer}}
   end
 
   def handle_cast(:next_turn, state) do
@@ -39,27 +65,7 @@ defmodule TurnManager do
     {:noreply, %{state | timer_ref: new_timer}}
   end
 
-  def get_interval do
-    GenServer.call(__MODULE__, :get_interval)
-  end
-
-  def handle_call(:get_interval, _from, state) do
-    {:reply, state.interval, state}
-  end
-
-  def set_interval(new_interval) when is_integer(new_interval) and new_interval > 0 do
-    GenServer.call(__MODULE__, {:set_interval, new_interval})
-  end
-
-  def handle_call({:set_interval, new_interval}, _from, state) do
-    # Cancel the previous timer
-    if state.timer_ref, do: Process.cancel_timer(state.timer_ref)
-
-    # Start a new timer with the new interval
-    new_timer = schedule_next_turn(new_interval)
-
-    {:reply, :ok, %{interval: new_interval, timer_ref: new_timer}}
-  end
+  # -------- Helpers --------
 
   defp update_turn(direction) do
     users = QuieroMate.all() |> Map.keys()
