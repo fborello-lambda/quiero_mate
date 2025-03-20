@@ -41,6 +41,11 @@ defmodule QuieroMate do
   end
 
   # -------- Getters --------
+  def get_users do
+    data = Agent.get(__MODULE__, & &1.data)
+    map_size(data)
+  end
+
   def get(id), do: Agent.get(__MODULE__, &Map.get(&1.data, id))
   def all, do: Agent.get(__MODULE__, & &1.data)
   def get_counter, do: Agent.get(__MODULE__, & &1.counter)

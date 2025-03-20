@@ -53,15 +53,19 @@ defmodule QuieroMateWeb.RondaChannel do
   # broadcast to everyone in the current topic (ronda:lobby).
   @impl true
   def handle_in("shout", %{"name" => name, "id" => id}, socket) do
-    # Insert new person in Agent
-    QuieroMate.put(name, id)
+    if QuieroMate.get_users() <= 10 do
+      # Insert new person in Agent
+      QuieroMate.put(name, id)
 
-    payload = %{name: name, id: id, turn: QuieroMate.get_current_turn()}
+      payload = %{name: name, id: id, turn: QuieroMate.get_current_turn()}
 
-    socket
-    |> broadcast("shout", payload)
+      socket
+      |> broadcast("shout", payload)
 
-    {:noreply, socket}
+      {:reply, {:ok, %{status: "joined"}}, socket}
+    else
+      {:reply, {:ok, %{status: "didnt_join"}}, socket}
+    end
   end
 
   # Add authorization logic here as required.

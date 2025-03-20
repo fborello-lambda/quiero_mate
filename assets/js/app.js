@@ -88,9 +88,15 @@ function joinRonda() {
       channel.push('shout', {
         name: name.value,
         id: resp.id
-      });
-      console.log("Received current_id:", resp);
+      }).receive("ok", (resp) => {
+        if (resp.status == "joined") {
+          console.log("Joined the Ronda!!!")
+        } else if (resp.status == "didnt_join") {
+          alert("Mas de 10 no toman mate 😝... Consegui otro mate")
+        }
+      })
     })
+
 }
 
 // Render the message with Tailwind styles
@@ -118,18 +124,28 @@ function render_message(payload) {
   ul.appendChild(li);
 }
 
+function handleNewInput() {
+  if (name.value.length > 0 && name.value.length < 30) {
+    if (name.value.includes(' ') || name.value.includes('\n')) {
+      alert("Try removing whitespaces")
+      return;
+    }
+    joinRonda()
+  } else {
+    alert("Try with a name smaller than 30 words")
+  }
+}
+
 // Listen for the [Enter] keypress event to join:
 name.addEventListener('keypress', function (event) {
-  if (event.key === `Enter` && name.value.length > 0) {
-    joinRonda()
+  if (event.key === `Enter`) {
+    handleNewInput()
   }
 });
 
 // On "Join"/"Quiero Mate!" button press
-join.addEventListener('click', function (_) {
-  if (name.value.length > 0) {
-    joinRonda()
-  }
+join.addEventListener('click', () => {
+  handleNewInput()
 });
 
 // On "Set Interval" button press
