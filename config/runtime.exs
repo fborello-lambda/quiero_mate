@@ -50,7 +50,7 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0},
       port: port
     ],
-    check_origin: ["//localhost", "//127.0.0.1", "//0.0.0.0"],
+    check_origin: false,
     secret_key_base: secret_key_base
 
   # ## SSL Support
