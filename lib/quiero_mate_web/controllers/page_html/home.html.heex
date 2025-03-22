@@ -32,13 +32,21 @@
     <ul id="ronda" phx-update="stream" class="flex flex-col items-center pa-1"></ul>
   </div>
 
-  <div class="fixed bottom-8 right-4 group">
-    <!-- Teapot Emoji -->
-    <div class="text-5xl py-2 scale-x-[-1] -rotate-45">🫖</div>
-    <!-- Water Droplet -->
-    <div class="animate-drop">💧</div>
-    <!-- Mate -->
-    <div class="text-3xl py-3 scale-x-[-1] -translate-x-8">🧉</div>
+  <div class="fixed right-32 bottom-28 group">
+    <!-- Teapot SVG -->
+    <div class="w-10 h-10 scale-[0.125] -rotate-45">
+     <%= svg_image(@conn, "teapot") %>
+    </div>
+    <!-- Water Droplet SVG -->
+    <div class="animate-drop">
+      <div class="w-10 h-24 translate-x-4 scale-[0.065]">
+        <%= svg_image(@conn, "droplet") %>
+      </div>
+    </div>
+    <!-- Mate SVG -->
+    <div class="w-10 h-10 -translate-y-2 -translate-x-2 scale-[0.125]">
+      <%= svg_image(@conn, "mate") %>
+    </div>
   </div>
 
   <footer class="p-2 h-[3rem] fixed bottom-0 w-full flex justify-center mate-footer">
@@ -57,11 +65,11 @@
 <style>
   @keyframes drop {
     0% { transform: translateY(-20px); opacity: 1; }
-    100% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(20px); opacity: 0.5; }
   }
 
   .animate-drop {
-    animation: drop 1s ease-out infinite;
+    animation: drop 1.5s ease-out infinite;
   }
   .mate-footer {
       background-image: 

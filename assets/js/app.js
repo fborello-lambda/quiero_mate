@@ -132,7 +132,7 @@ function handleNewInput() {
     }
     joinRonda()
   } else {
-    alert("Try with a name smaller than 30 words")
+    alert("Try with a name smaller than 30 letters")
   }
 }
 

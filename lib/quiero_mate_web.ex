@@ -80,6 +80,8 @@ defmodule QuieroMateWeb do
 
   defp html_helpers do
     quote do
+      import PhoenixInlineSvg.Helpers
+
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
