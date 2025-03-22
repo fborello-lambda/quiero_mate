@@ -32,19 +32,19 @@
     <ul id="ronda" phx-update="stream" class="flex flex-col items-center pa-1"></ul>
   </div>
 
-  <div class="fixed right-32 bottom-28 group">
+  <div class="fixed right-20 bottom-20 group">
     <!-- Teapot SVG -->
-    <div class="w-10 h-10 scale-[0.125] -rotate-45">
+    <div class="w-10 h-10  translate-x-2 translate-y-4 scale-[0.08] -rotate-45">
      <%= svg_image(@conn, "teapot") %>
     </div>
     <!-- Water Droplet SVG -->
     <div class="animate-drop">
-      <div class="w-10 h-24 translate-x-4 scale-[0.065]">
+      <div class="w-10 h-20 translate-x-4 scale-[0.04]">
         <%= svg_image(@conn, "droplet") %>
       </div>
     </div>
     <!-- Mate SVG -->
-    <div class="w-10 h-10 -translate-y-2 -translate-x-2 scale-[0.125]">
+    <div class="w-10 h-10 -translate-y-2 scale-[0.08]">
       <%= svg_image(@conn, "mate") %>
     </div>
   </div>
@@ -65,7 +65,7 @@
 <style>
   @keyframes drop {
     0% { transform: translateY(-20px); opacity: 1; }
-    100% { transform: translateY(20px); opacity: 0.5; }
+    100% { transform: translateY(40px); opacity: 0.3; }
   }
 
   .animate-drop {
