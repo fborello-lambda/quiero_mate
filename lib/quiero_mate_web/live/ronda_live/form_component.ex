@@ -20,13 +20,6 @@ defmodule QuieroMateWeb.RondaLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:cebador]} type="text" label="Cebador" />
-        <.input
-          field={@form[:users]}
-          type="select"
-          multiple
-          label="Users"
-          options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
-        />
         <:actions>
           <.button phx-disable-with="Saving...">Save Ronda</.button>
         </:actions>

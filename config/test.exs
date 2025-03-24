@@ -5,7 +5,7 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :countdown, QuieroMate.Repo,
+config :quiero_mate, QuieroMate.Repo,
   database: Path.expand("../quiero_mate_test.db", __DIR__),
   pool_size: 5,
   pool: Ecto.Adapters.SQL.Sandbox

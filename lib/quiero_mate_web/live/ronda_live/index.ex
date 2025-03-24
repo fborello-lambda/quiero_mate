@@ -3,9 +3,14 @@ defmodule QuieroMateWeb.RondaLive.Index do
 
   alias QuieroMate.Rondas
   alias QuieroMate.Rondas.Ronda
+  alias Phoenix.PubSub
+
+  @topic "lobby"
 
   @impl true
   def mount(_params, _session, socket) do
+    PubSub.subscribe(QuieroMate.PubSub, @topic)
+
     {:ok, stream(socket, :rondas, Rondas.list_rondas())}
   end
 
@@ -34,6 +39,26 @@ defmodule QuieroMateWeb.RondaLive.Index do
 
   @impl true
   def handle_info({QuieroMateWeb.RondaLive.FormComponent, {:saved, ronda}}, socket) do
+    PubSub.broadcast(QuieroMate.PubSub, @topic, {:ronda_saved, ronda})
+
+    {:noreply, stream_insert(socket, :rondas, ronda)}
+  end
+
+  @impl true
+  def handle_info({:ronda_saved, ronda}, socket) do
+    # Insert the new or updated ronda into the stream for all clients
+    {:noreply, stream_insert(socket, :rondas, ronda)}
+  end
+
+  @impl true
+  def handle_info({:ronda_deleted, ronda}, socket) do
+    # Insert the new or updated ronda into the stream for all clients
+    {:noreply, stream_delete(socket, :rondas, ronda)}
+  end
+
+  @impl true
+  def handle_info({:new_user, ronda}, socket) do
+    # Insert the new or updated ronda into the stream for all clients
     {:noreply, stream_insert(socket, :rondas, ronda)}
   end
 
@@ -41,6 +66,8 @@ defmodule QuieroMateWeb.RondaLive.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     ronda = Rondas.get_ronda!(id)
     {:ok, _} = Rondas.delete_ronda(ronda)
+
+    PubSub.broadcast(QuieroMate.PubSub, @topic, {:ronda_deleted, ronda})
 
     {:noreply, stream_delete(socket, :rondas, ronda)}
   end

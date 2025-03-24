@@ -8,16 +8,24 @@
   </:actions>
 </.header>
 
+<h1>PRESENT{@present}</h1>
+
 <.list>
   <:item title="Cebador">{@ronda.cebador}</:item>
-  <:item title="Users">{@ronda.users}</:item>
+  <:item title="Users">
+    <list>
+      <%= for user <- @ronda.users do %>
+        <li title="User">{user}</li>
+      <% end %>
+    </list>
+  </:item>
 </.list>
 
 <.back navigate={~p"/rondas"}>Back to rondas</.back>
 
 <.modal :if={@live_action == :edit} id="ronda-modal" show on_cancel={JS.patch(~p"/rondas/#{@ronda}")}>
   <.live_component
-    module={QuieroMateWeb.RondaLive.FormComponent}
+    module={QuieroMateWeb.RondaLive.UserFormComponent}
     id={@ronda.id}
     title={@page_title}
     action={@live_action}
