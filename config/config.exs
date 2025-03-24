@@ -8,6 +8,7 @@
 import Config
 
 config :quiero_mate,
+  ecto_repos: [QuieroMate.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
