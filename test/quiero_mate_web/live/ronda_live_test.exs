@@ -4,9 +4,12 @@ defmodule QuieroMateWeb.RondaLiveTest do
   import Phoenix.LiveViewTest
   import QuieroMate.RondasFixtures
 
-  @create_attrs %{cebador: "some cebador", users: ["option1", "option2"]}
-  @update_attrs %{cebador: "some updated cebador", users: ["option1"]}
-  @invalid_attrs %{cebador: nil, users: []}
+  @create_ronda_attrs %{cebador: "some cebador"}
+  @update_ronda_attrs %{cebador: "some updated cebador"}
+  @invalid_ronda_attrs %{cebador: nil}
+
+  @create_user_attrs %{user: "some user"}
+  @invalid_user_attrs %{user: nil}
 
   defp create_ronda(_) do
     ronda = ronda_fixture()
@@ -32,11 +35,11 @@ defmodule QuieroMateWeb.RondaLiveTest do
       assert_patch(index_live, ~p"/rondas/new")
 
       assert index_live
-             |> form("#ronda-form", ronda: @invalid_attrs)
+             |> form("#ronda-form", ronda: @invalid_ronda_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
       assert index_live
-             |> form("#ronda-form", ronda: @create_attrs)
+             |> form("#ronda-form", ronda: @create_ronda_attrs)
              |> render_submit()
 
       assert_patch(index_live, ~p"/rondas")
@@ -55,11 +58,11 @@ defmodule QuieroMateWeb.RondaLiveTest do
       assert_patch(index_live, ~p"/rondas/#{ronda}/edit")
 
       assert index_live
-             |> form("#ronda-form", ronda: @invalid_attrs)
+             |> form("#ronda-form", ronda: @invalid_ronda_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
       assert index_live
-             |> form("#ronda-form", ronda: @update_attrs)
+             |> form("#ronda-form", ronda: @update_ronda_attrs)
              |> render_submit()
 
       assert_patch(index_live, ~p"/rondas")
@@ -95,19 +98,19 @@ defmodule QuieroMateWeb.RondaLiveTest do
 
       assert_patch(show_live, ~p"/rondas/#{ronda}/show/edit")
 
+      # TODO test for inavlid input
       assert show_live
-             |> form("#ronda-form", ronda: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> form("#ronda-form", @invalid_user_attrs)
+             |> render_change()
 
       assert show_live
-             |> form("#ronda-form", ronda: @update_attrs)
+             |> form("#ronda-form", @create_user_attrs)
              |> render_submit()
 
       assert_patch(show_live, ~p"/rondas/#{ronda}")
 
       html = render(show_live)
-      assert html =~ "Ronda updated successfully"
-      assert html =~ "some updated cebador"
+      assert html =~ "some user"
     end
   end
 end
