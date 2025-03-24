@@ -69,8 +69,6 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
     apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
-    # Used for the notifications
-    libnotify-bin dbus \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -97,4 +95,7 @@ COPY --from=builder --chown=myuser:root /app/_build/${MIX_ENV}/rel/quiero_mate .
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-CMD ["/app/bin/server"]
+# To be able to run the migrate command,
+# its necessary to run mix phx.gen.release
+# that will generate the necessary files in the rel/ folder
+CMD bash /app/bin/migrate && /app/bin/server

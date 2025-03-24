@@ -38,3 +38,6 @@ npm-debug.log
 # Database files
 *.db
 *.db-*
+
+# Docker stamp
+.docker_stamp
