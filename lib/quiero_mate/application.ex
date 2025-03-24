@@ -21,7 +21,8 @@ defmodule QuieroMate.Application do
       # Start the Agent that helps to store
       # the people connected in memory.
       QuieroMate,
-      TurnManager
+      TurnManager,
+      QuieroMateWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

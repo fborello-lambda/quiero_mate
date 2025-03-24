@@ -3,8 +3,8 @@ defmodule QuieroMate.Rondas.Ronda do
   import Ecto.Changeset
 
   schema "rondas" do
-    field :cebador, :string
-    field :users, {:array, :string}
+    field(:cebador, :string)
+    field(:users, {:array, :string}, default: [])
 
     timestamps(type: :utc_datetime)
   end
