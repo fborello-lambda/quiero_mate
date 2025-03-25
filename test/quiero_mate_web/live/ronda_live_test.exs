@@ -22,7 +22,7 @@ defmodule QuieroMateWeb.RondaLiveTest do
     test "lists all rondas", %{conn: conn, ronda: ronda} do
       {:ok, _index_live, html} = live(conn, ~p"/rondas")
 
-      assert html =~ "Listing Rondas"
+      assert html =~ "Rondas"
       assert html =~ ronda.cebador
     end
 
@@ -30,7 +30,7 @@ defmodule QuieroMateWeb.RondaLiveTest do
       {:ok, index_live, _html} = live(conn, ~p"/rondas")
 
       assert index_live |> element("a", "New Ronda") |> render_click() =~
-               "New Ronda"
+               "Nueva Ronda"
 
       assert_patch(index_live, ~p"/rondas/new")
 
@@ -52,8 +52,8 @@ defmodule QuieroMateWeb.RondaLiveTest do
     test "updates ronda in listing", %{conn: conn, ronda: ronda} do
       {:ok, index_live, _html} = live(conn, ~p"/rondas")
 
-      assert index_live |> element("#rondas-#{ronda.id} a", "Edit") |> render_click() =~
-               "Edit Ronda"
+      assert index_live |> element("#rondas-#{ronda.id} a", "Cambiar Cebador") |> render_click() =~
+               "Cambiar Cebador"
 
       assert_patch(index_live, ~p"/rondas/#{ronda}/edit")
 
@@ -93,8 +93,8 @@ defmodule QuieroMateWeb.RondaLiveTest do
     test "updates ronda within modal", %{conn: conn, ronda: ronda} do
       {:ok, show_live, _html} = live(conn, ~p"/rondas/#{ronda}")
 
-      assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Ronda"
+      assert show_live |> element("a", "New User") |> render_click() =~
+               "Nuevo Tomador"
 
       assert_patch(show_live, ~p"/rondas/#{ronda}/show/edit")
 
