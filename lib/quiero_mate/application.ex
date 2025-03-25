@@ -9,6 +9,9 @@ defmodule QuieroMate.Application do
   def start(_type, _args) do
     children = [
       QuieroMateWeb.Telemetry,
+      QuieroMate.Repo,
+      {Ecto.Migrator,
+       repos: Application.fetch_env!(:quiero_mate, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:quiero_mate, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: QuieroMate.PubSub},
       # Start a worker by calling: QuieroMate.Worker.start_link(arg)
@@ -18,7 +21,8 @@ defmodule QuieroMate.Application do
       # Start the Agent that helps to store
       # the people connected in memory.
       QuieroMate,
-      TurnManager
+      TurnManager,
+      QuieroMateWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -33,5 +37,10 @@ defmodule QuieroMate.Application do
   def config_change(changed, _new, removed) do
     QuieroMateWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp skip_migrations?() do
+    # By default, sqlite migrations are run when using a release
+    System.get_env("RELEASE_NAME") != nil
   end
 end

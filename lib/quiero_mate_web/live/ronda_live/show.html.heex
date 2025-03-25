@@ -1,0 +1,41 @@
+<.header>
+  Ronda {@ronda.id}
+  <h1>Personas activas: {@present}</h1>
+  
+  <:actions>
+    <.link patch={~p"/rondas/#{@ronda}/show/edit"} phx-click={JS.push_focus()}>
+      <.button class="btn-green">
+        <%!-- Used for testing --%>
+        <p class="sr-only">New User</p>
+        <p class="hero-user-plus"></p>
+      </.button>
+    </.link>
+  </:actions>
+</.header>
+
+
+<.list>
+  <:item title="Cebador Designado">{@ronda.cebador}</:item>
+  <:item title="Tomadores Compulsivos">
+    <list>
+      <%= for user <- @ronda.users do %>
+        <li>{user}</li>
+      <% end %>
+    </list>
+  </:item>
+</.list>
+
+<footer>
+<.back navigate={~p"/rondas"}>Volver al listado</.back>
+</footer>
+
+<.modal :if={@live_action == :edit} id="ronda-modal" show on_cancel={JS.patch(~p"/rondas/#{@ronda}")}>
+  <.live_component
+    module={QuieroMateWeb.RondaLive.UserFormComponent}
+    id={@ronda.id}
+    title={@page_title}
+    action={@live_action}
+    ronda={@ronda}
+    patch={~p"/rondas/#{@ronda}"}
+  />
+</.modal>

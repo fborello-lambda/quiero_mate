@@ -3,3 +3,35 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+
+.btn-green {
+    background-color: #86efac;
+    /* Tailwind's bg-green-300 */
+    color: #065f46;
+    /* Tailwind's text-green-900 */
+    border-radius: 9999px;
+    /* Tailwind's rounded-full */
+    padding: 0.5rem;
+    /* Tailwind's p-2 */
+    font-weight: 500;
+    /* Tailwind's font-medium */
+    line-height: 1.5rem;
+    /* Tailwind's leading-6 */
+}
+
+
+.btn-red {
+    background-color: #fca5a5;
+    /* Tailwind's bg-red-300 */
+    color: #7f1d1d;
+    /* Tailwind's text-red-900 */
+    border-radius: 9999px;
+    /* Tailwind's rounded-full */
+    padding: 0.5rem;
+    /* Tailwind's p-2 */
+    font-weight: 500;
+    /* Tailwind's font-medium */
+    line-height: 1.5rem;
+    /* Tailwind's leading-6 */
+}

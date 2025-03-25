@@ -1,0 +1,47 @@
+<.header>
+  Rondas
+  <:actions>
+    <.link patch={~p"/rondas/new"}>
+      <.button class="btn-green">
+        <%!-- Used for testing --%>
+        <p class="sr-only">New Ronda</p>
+        <p class="hero-plus"></p>
+      </.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="rondas"
+  rows={@streams.rondas}
+  row_click={fn {_id, ronda} -> JS.navigate(~p"/rondas/#{ronda}") end}
+>
+  <:col :let={{_id, ronda}} label="Cebador 🫖">{ronda.cebador}</:col>
+  <:col :let={{_id, ronda}} label="Tomadores 👀">{Enum.join(ronda.users, ", ")}</:col>
+  <:action :let={{_id, ronda}}>
+    <div class="sr-only">
+      <.link navigate={~p"/rondas/#{ronda}"}>Show</.link>
+    </div>
+    <.link patch={~p"/rondas/#{ronda}/edit"} class="btn-green">Cambiar Cebador</.link>
+  </:action>
+  <:action :let={{id, ronda}}>
+    <.link
+      class="btn-red"
+      phx-click={JS.push("delete", value: %{id: ronda.id}) |> hide("##{id}")}
+      data-confirm="Seguro?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="ronda-modal" show on_cancel={JS.patch(~p"/rondas")}>
+  <.live_component
+    module={QuieroMateWeb.RondaLive.FormComponent}
+    id={@ronda.id || :new}
+    title={@page_title}
+    action={@live_action}
+    ronda={@ronda}
+    patch={~p"/rondas"}
+  />
+</.modal>

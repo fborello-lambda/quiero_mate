@@ -35,3 +35,9 @@ quiero_mate-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Database files
+*.db
+*.db-*
+
+# Docker stamp
+.docker_stamp
