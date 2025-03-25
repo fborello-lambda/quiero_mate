@@ -100,11 +100,11 @@ defmodule QuieroMateWeb.RondaLiveTest do
 
       # TODO test for inavlid input
       assert show_live
-             |> form("#ronda-form", @invalid_user_attrs)
+             |> form("#user-form", @invalid_user_attrs)
              |> render_change()
 
       assert show_live
-             |> form("#ronda-form", @create_user_attrs)
+             |> form("#user-form", @create_user_attrs)
              |> render_submit()
 
       assert_patch(show_live, ~p"/rondas/#{ronda}")

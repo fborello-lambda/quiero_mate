@@ -1,27 +1,31 @@
 <.header>
   Ronda {@ronda.id}
-  <:subtitle>This is a ronda record from your database.</:subtitle>
+  <h1>Personas activas: {@present}</h1>
+  
   <:actions>
     <.link patch={~p"/rondas/#{@ronda}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit ronda</.button>
+      <.button class="btn-green">
+        <p class="hero-user-plus"></p>
+      </.button>
     </.link>
   </:actions>
 </.header>
 
-<h1>PRESENT{@present}</h1>
 
 <.list>
-  <:item title="Cebador">{@ronda.cebador}</:item>
-  <:item title="Users">
+  <:item title="Cebador Designado">{@ronda.cebador}</:item>
+  <:item title="Tomadores Compulsivos">
     <list>
       <%= for user <- @ronda.users do %>
-        <li title="User">{user}</li>
+        <li>{user}</li>
       <% end %>
     </list>
   </:item>
 </.list>
 
-<.back navigate={~p"/rondas"}>Back to rondas</.back>
+<footer>
+<.back navigate={~p"/rondas"}>Volver al listado</.back>
+</footer>
 
 <.modal :if={@live_action == :edit} id="ronda-modal" show on_cancel={JS.patch(~p"/rondas/#{@ronda}")}>
   <.live_component

@@ -14,5 +14,7 @@ defmodule QuieroMate.Rondas.Ronda do
     ronda
     |> cast(attrs, [:cebador, :users])
     |> validate_required([:cebador, :users])
+    |> validate_length(:cebador, max: 30)
+    |> validate_length(:users, max: 7)
   end
 end

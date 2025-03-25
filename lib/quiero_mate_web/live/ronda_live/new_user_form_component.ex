@@ -9,20 +9,24 @@ defmodule QuieroMateWeb.RondaLive.UserFormComponent do
     <div>
       <.header>
         {@title}
-        <:subtitle>Use this form to manage ronda records in your database.</:subtitle>
       </.header>
 
       <.simple_form
         for={@form}
-        id="ronda-form"
+        id="user-form"
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:user]} type="text" label="User" />
+        <.input field={@form[:user]} type="text"/>
 
-        <:actions>
-          <.button phx-disable-with="Saving...">Quiero Mate</.button>
+        <:actions class="flex justify-center w-full">
+          <div class="flex justify-center w-full">
+            <.button phx-disable-with="Saving..."
+            >
+              Quiero Mate!
+            </.button>
+          </div>
         </:actions>
       </.simple_form>
     </div>
@@ -31,9 +35,7 @@ defmodule QuieroMateWeb.RondaLive.UserFormComponent do
 
   @impl true
   def update(state, socket) do
-    IO.puts("UPDATE")
-    state |> IO.inspect()
-
+    # TODO: check if this update is strictly required
     {:ok,
      socket
      |> assign(state)
@@ -41,10 +43,14 @@ defmodule QuieroMateWeb.RondaLive.UserFormComponent do
   end
 
   @impl true
-  def handle_event("validate", ronda_params, socket) do
-    ronda_params |> IO.inspect()
+  def handle_event("validate", %{"user" => user}, socket) do
     # TODO: validate user
-    _changeset = Rondas.change_ronda(socket.assigns.ronda, ronda_params)
+    current_users = socket.assigns.ronda.users || []
+    updated_users = current_users ++ [user]
+    updated_params = %{"users" => updated_users}
+
+    changeset = Rondas.change_ronda(socket.assigns.ronda, updated_params)
+    changeset |> IO.inspect()
     {:noreply, socket}
   end
 
@@ -63,11 +69,14 @@ defmodule QuieroMateWeb.RondaLive.UserFormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "User added successfully")
+         |> put_flash(:info, "Ingresaste a la ronda como: \"#{user}\"")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+        {:noreply,
+         socket
+         |> put_flash(:error, "Error al ingresar a la ronda")
+         |> push_patch(to: socket.assigns.patch)}
     end
   end
 

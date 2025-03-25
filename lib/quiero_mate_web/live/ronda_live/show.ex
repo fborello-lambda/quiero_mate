@@ -4,6 +4,7 @@ defmodule QuieroMateWeb.RondaLive.Show do
   alias QuieroMateWeb.Presence
   alias QuieroMate.Rondas
   alias Phoenix.PubSub
+  alias QuieroMateWeb.RondaLive.Index, as: Index
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -44,20 +45,16 @@ defmodule QuieroMateWeb.RondaLive.Show do
 
   @impl true
   def handle_info({QuieroMateWeb.RondaLive.UserFormComponent, {:updated, ronda}}, socket) do
-    IO.puts("UserFormComponent updated")
-
     PubSub.broadcast(QuieroMate.PubSub, socket.assigns.topic, {:new_user, ronda})
-    PubSub.broadcast(QuieroMate.PubSub, "lobby", {:new_user, ronda})
-
-    {:noreply, socket |> assign(:ronda, ronda)}
+    PubSub.broadcast(QuieroMate.PubSub, Index.topic(), {:new_user, ronda})
+    {:noreply, assign(socket, :ronda, ronda)}
   end
 
   @impl true
   def handle_info({:new_user, ronda}, socket) do
-    IO.puts("New user added")
-    {:noreply, socket |> assign(:ronda, ronda)}
+    {:noreply, assign(socket, :ronda, ronda)}
   end
 
   defp page_title(:show), do: "Show Ronda"
-  defp page_title(:edit), do: "Edit Ronda"
+  defp page_title(:edit), do: "Nuevo Tomador"
 end

@@ -9,7 +9,6 @@ defmodule QuieroMateWeb.RondaLive.FormComponent do
     <div>
       <.header>
         {@title}
-        <:subtitle>Use this form to manage ronda records in your database.</:subtitle>
       </.header>
 
       <.simple_form
@@ -19,9 +18,14 @@ defmodule QuieroMateWeb.RondaLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:cebador]} type="text" label="Cebador" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Ronda</.button>
+        <.input field={@form[:cebador]} type="text" label={if @title == "Nueva Ronda", do: "Cebador", else: nil} />
+        <:actions class="flex justify-center w-full">
+          <div class="flex justify-center w-full">
+            <.button phx-disable-with="Saving..."
+            >
+              Guardar Ronda
+            </.button>
+          </div>
         </:actions>
       </.simple_form>
     </div>
